@@ -1,10 +1,12 @@
 //Declaración de variables
-var segundos = 30;
+var segundos = 10;
 var minutos = 0;
 var llamada;
 var ceromin='';
 var ceroseg='';
-//var verifica = false;
+var finalizado= false;
+var t;
+var timer_is_on = 0;
 
 $(function(){
 	//"Match Game" está animado
@@ -13,7 +15,7 @@ $(function(){
 	      $(".main-titulo").switchClass("main-titulo-2","main-titulo", 200)
   	}, 1000);
 	//Función para cronometro
-		function CronoMetro(){
+		function timedCount(){
 				TiempoCero(minutos,segundos);
 				segundos = segundos % 60;
 				//document.getElementById("reloj").innerHTML=ceromin+minutos+':'+ceroseg+segundos;
@@ -21,14 +23,14 @@ $(function(){
 				 if (minutos ===0 && segundos ===0){
 						//alert ("Fin del Juego");
 						Finalizar();
-						//clearTimeOut(crono);
+						stopCount();
 				}
 				if (segundos ==0){
 						minutos --;
 						segundos+=60;
 				}
 				segundos --;
-				var crono = setTimeout(CronoMetro,1000);
+				t = setTimeout(timedCount,1000);
 		};
 
 		function TiempoCero(minutos,segundos){
@@ -45,26 +47,24 @@ $(function(){
 				 return ceroseg;return ceromin;
 		};
 
-		//Reiniciar
-		// function ReiniciarJuego(verifica) {
-		//   clearTimeout(crono);
-		//   $(".btn-reinicio").text("Iniciar");
-		//   if (verifica) {
-		//     $(".panel-tablero").show("slow");
-		//     $(".panel-score").animate(
-		//       {
-		//         width: "-=50"
-		//       }, 1000
-		//     );
-		//     verifica=false;
-		//   };
-		//
-		// }
+		function startCount() {
+	    if (!timer_is_on) {
+	        timer_is_on = 1;
+	        timedCount();
+	    }
+		};
+
+		function stopCount() {
+    clearTimeout(t);
+    timer_is_on = 0;
+		minutos = 0;
+		segundos = 10;
+		};
 
 		//Finalizar
 		function Finalizar() {
-		  //clearTimeout(crono);
-			$(".panel-score").prepend('<h1 class="main-titulo">Juego Terminado</h1>');
+			finalizado = true;
+			$(".panel-score").prepend('<h1 class="main-titulo" id="titulo-finalizado">Juego Terminado</h1>');
 			$(".main-titulo").css("text-align", "center");
 			$(".main-titulo-2").css("text-align", "center");
 		  $(".panel-tablero").hide("slide", {direction: "left"}, "slow");
@@ -75,20 +75,36 @@ $(function(){
 					width: "85%"
 		    }, 1000
 		  );
-		  //verifica=true;
 		}
 
 		//Botón de inicio
 		$(".btn-reinicio").on("click", function(){
 			if ($(".btn-reinicio").text() == "Iniciar"){
 				$(".btn-reinicio").html('Reiniciar');
-				CronoMetro();
+				startCount();
+				$('#score-text').text('100');
+				$('#movimientos-text').text('200');
 			}else{
-				$(".btn-reinicio").html('Iniciar');
+				stopCount();
+				$(".btn-reinicio").text("Iniciar");
 				$('#timer').text('02:00');
+				$('#score-text').text('0');
+				$('#movimientos-text').text('0');
+				if (finalizado) {
+					//alert ("El juego ha finalizado");
+			    $(".panel-tablero").show("slow");
+					$(".time").show("slow");
+					$('#titulo-finalizado').remove();
+			    $(".panel-score").animate(
+			      {
+			        width: "25%"
+			      }, 1000
+			    );
+				} else {
+					alert ("El juego se ha reiniciado");
+				}
 			}
-			$(".btn-reinicio").html('Reiniciar');
-
+			//$(".btn-reinicio").html('Reiniciar');
 		});
 
 });
