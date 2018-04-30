@@ -14,7 +14,6 @@ $(function(){
 		function timedCount(){
 				TiempoCero(minutos,segundos);
 				segundos = segundos % 60;
-				//document.getElementById("reloj").innerHTML=ceromin+minutos+':'+ceroseg+segundos;
 				$('#timer').text(ceromin+minutos+':'+ceroseg+segundos);
 				 if (minutos ===0 && segundos ===0){
 						//alert ("Fin del Juego");
@@ -67,6 +66,7 @@ $(function(){
 	            );
 	            $(imagen).draggable();
 							//alert ("agregando imagen");
+							//http://jsfiddle.net/39khs/82/
 	            $('.col-' + col).append(imagen);
 	        }
 	    }
@@ -90,7 +90,7 @@ $(function(){
 			  $(".panel-score").animate(
 			    {
 			      //width: "+=50"
-						width: "85%"
+						width: "95%"
 			    }, 1000
 			  );
 			}
@@ -111,19 +111,21 @@ $(function(){
 			}
 			if ($(".btn-reinicio").text() == "Iniciar"){
 				$(".btn-reinicio").html('Reiniciar');
+				$(".main-titulo").css("text-align", "left");
 				InicializarTablero();
 				startCount();
 				$('#score-text').text('100');
 				$('#movimientos-text').text('200');
 			}else{
 				stopCount();
-				ResetearTablero();
+				ResetearTablero()
 				$(".btn-reinicio").text("Iniciar");
 				$('#timer').text('02:00');
 				$('#score-text').text('0');
 				$('#movimientos-text').text('0');
 				if (finalizado) {
 					//alert ("El juego ha finalizado");
+					$(".main-titulo").css("text-align", "left");
 			    $(".panel-tablero").show("slow");
 					$(".time").show("slow");
 					$('#titulo-finalizado').remove();
@@ -132,10 +134,9 @@ $(function(){
 			        width: "25%"
 			      }, 1000
 			    );
+				} else {
+					alert ("El juego se ha reiniciado");
 				}
-				// else {
-				// 	alert ("El juego se ha reiniciado");
-				// }
 			}
 			//$(".btn-reinicio").html('Reiniciar');
 		});
