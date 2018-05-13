@@ -1,5 +1,5 @@
 //Declaración de variables
-var segundos = 10;
+var segundos = 30;
 var minutos = 0;
 var llamada;
 var ceromin ='';
@@ -16,7 +16,6 @@ $(function(){
 				segundos = segundos % 60;
 				$('#timer').text(ceromin+minutos+':'+ceroseg+segundos);
 				 if (minutos ===0 && segundos ===0){
-						//alert ("Fin del Juego");
 						Finalizar();
 				}
 				if (segundos ==0){
@@ -65,11 +64,10 @@ $(function(){
 	                {"src": "image/" + (1 + Math.floor(Math.random() * 4)) + ".png", "class": "elemento"}
 	            );
 	            $(imagen).draggable();
-							//alert ("agregando imagen");
-							//http://jsfiddle.net/39khs/82/
 	            $('.col-' + col).append(imagen);
 	        }
 	    }
+			AddDulces();
 		};
 
 		//Resetear tablero
@@ -78,6 +76,47 @@ $(function(){
 	        $('.col-' + col).empty();
 	    }
 		};
+
+		//Movimiento de elementos
+		function AddDulces() {
+		  $('img').draggable({
+		  containment: '.panel-tablero',
+		  droppable: 'img',
+		  revert: true,
+		  revertDuration: 500,
+		  grid: [100, 100],
+		  zIndex: 10,
+		  drag: Movimiento
+		  });
+		  $('img').droppable({
+		    drop: MoverImagen
+		  });
+		 //HacerJugadaVertical();
+		 //HacerJugadaHorizontal();
+		}
+
+		function MoverImagen(event, DragImg)
+		{
+		  var DragImg = $(DragImg.draggable);
+		  var img1 = DragImg.attr('src');
+		  var DropImg = $(this);
+		  var img2 = DropImg.attr('src');
+		  DragImg.attr('src', img2);
+		  DropImg.attr('src', img1);
+
+		  setTimeout(function () {
+		    //HacerJugadaVertical();
+		    //HacerJugadaHorizontal();
+		    //actualizarMovimientos();
+		  }, 300);
+		}
+
+		function Movimiento(event, DragImg) {
+		  DragImg.position.top = Math.min(100, DragImg.position.top);
+		  DragImg.position.bottom = Math.min(100, DragImg.position.bottom);
+		  DragImg.position.left = Math.min(100, DragImg.position.left);
+		  DragImg.position.right = Math.min(100, DragImg.position.right);
+		}
 
 		//Finalizar
 		function Finalizar() {
@@ -124,7 +163,6 @@ $(function(){
 				$('#score-text').text('0');
 				$('#movimientos-text').text('0');
 				if (finalizado) {
-					//alert ("El juego ha finalizado");
 					$(".main-titulo").css("text-align", "left");
 			    $(".panel-tablero").show("slow");
 					$(".time").show("slow");
@@ -138,7 +176,6 @@ $(function(){
 					alert ("El juego se ha reiniciado");
 				}
 			}
-			//$(".btn-reinicio").html('Reiniciar');
 		});
 
 });
