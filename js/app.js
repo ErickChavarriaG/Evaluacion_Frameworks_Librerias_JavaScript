@@ -8,6 +8,7 @@ var finalizado = false;
 var iniciado = false;
 var t;
 var timer_is_on = 0;
+var contador = 0;
 
 $(function(){
 	//Función para cronometro
@@ -107,7 +108,7 @@ $(function(){
 		  setTimeout(function () {
 		    //HacerJugadaVertical();
 		    //HacerJugadaHorizontal();
-		    //actualizarMovimientos();
+		    NuevoMovimiento();
 		  }, 300);
 		}
 
@@ -116,6 +117,12 @@ $(function(){
 		  DragImg.position.bottom = Math.min(100, DragImg.position.bottom);
 		  DragImg.position.left = Math.min(100, DragImg.position.left);
 		  DragImg.position.right = Math.min(100, DragImg.position.right);
+		}
+
+		//Aumenta contador de movimientos
+		function NuevoMovimiento() {
+				++contador;
+		    $('#movimientos-text').text(contador);
 		}
 
 		//Finalizar
@@ -153,8 +160,7 @@ $(function(){
 				$(".main-titulo").css("text-align", "left");
 				InicializarTablero();
 				startCount();
-				$('#score-text').text('100');
-				$('#movimientos-text').text('200');
+				//$('#score-text').text('100');
 			}else{
 				stopCount();
 				ResetearTablero()
